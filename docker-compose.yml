@@ -9,7 +9,7 @@
 services:
   agent-share:
     # Use pre-built image (recommended for production)
-    # image: ghcr.io/henricook/agent-share:latest
+    # image: ghcr.io/henricook/agentshare:latest
 
     # OR build from source (default for local development)
     build:

@@ -27,7 +27,7 @@ docker run -d \
   -p 8721:8721 \
   -v agent-share-data:/app/storage \
   -e BASE_URL=http://localhost:8721 \
-  ghcr.io/henricook/agent-share:latest
+  ghcr.io/henricook/agentshare:latest
 ```
 
 Or with docker-compose:
@@ -35,7 +35,7 @@ Or with docker-compose:
 ```yaml
 services:
   agent-share:
-    image: ghcr.io/henricook/agent-share:latest
+    image: ghcr.io/henricook/agentshare:latest
     ports:
       - "8721:8721"
     volumes:
@@ -269,7 +269,7 @@ docker run -d \
   -p 8721:8721 \
   -v agent-share-data:/app/storage \
   -e BASE_URL=https://your-domain.com \
-  ghcr.io/henricook/agent-share:latest
+  ghcr.io/henricook/agentshare:latest
 ```
 
 2. **Set up reverse proxy** (nginx, Caddy, Traefik, etc.) with SSL in front of the application
@@ -288,7 +288,7 @@ volumes:
 Pull the latest image which includes the latest cclogviewer:
 
 ```bash
-docker pull ghcr.io/henricook/agent-share:latest
+docker pull ghcr.io/henricook/agentshare:latest
 docker restart agent-share
 ```
 
