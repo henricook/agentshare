@@ -1,7 +1,17 @@
-version: '3.8'
+# Agent Share - Docker Compose Configuration
+#
+# To use pre-built image from GitHub Container Registry (recommended):
+#   Uncomment the 'image:' line below and remove/comment the 'build:' section
+#
+# To build from source:
+#   Keep the 'build:' section and remove/comment the 'image:' line
 
 services:
   agent-share:
+    # Use pre-built image (recommended for production)
+    # image: ghcr.io/henricook/agent-share:latest
+
+    # OR build from source (default for local development)
     build:
       context: .
       dockerfile: Dockerfile

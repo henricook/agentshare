@@ -1,6 +1,9 @@
 # Agent Share
 
-A production-ready service for uploading AI agent session logs (Claude Code, Codex, Gemini CLI, etc.), converting them to beautiful HTML using [cclogviewer](https://github.com/Brads3290/cclogviewer), and sharing via secure links.
+A production-ready service for uploading AI agent session logs, converting them to beautiful HTML using [cclogviewer](https://github.com/Brads3290/cclogviewer), and sharing via secure links.
+
+**Currently Supported:** Claude Code
+**Future Support (Aspirational):** Codex, Gemini CLI, and other AI coding assistants
 
 ## Features
 
@@ -14,19 +17,51 @@ A production-ready service for uploading AI agent session logs (Claude Code, Cod
 
 ## Quick Start
 
-### Using Docker (Recommended)
+### Using Pre-built Docker Image (Recommended)
+
+The easiest way to get started is using the pre-built image from GitHub Container Registry:
+
+```bash
+docker run -d \
+  --name agent-share \
+  -p 8721:8721 \
+  -v agent-share-data:/app/storage \
+  -e BASE_URL=http://localhost:8721 \
+  ghcr.io/henricook/agent-share:latest
+```
+
+Or with docker-compose:
+
+```yaml
+services:
+  agent-share:
+    image: ghcr.io/henricook/agent-share:latest
+    ports:
+      - "8721:8721"
+    volumes:
+      - agent-share-data:/app/storage:rw
+    environment:
+      - BASE_URL=http://localhost:8721
+
+volumes:
+  agent-share-data:
+```
+
+Then access the application at http://localhost:8721.
+
+### Building from Source
 
 1. **Clone the repository**
 
 ```bash
-git clone <repo-url>
+git clone https://github.com/henricook/agent-share.git
 cd agent-share
 ```
 
 2. **Build and run with docker-compose**
 
 ```bash
-docker-compose up -d
+docker-compose up -d --build
 ```
 
 3. **Access the application**
@@ -220,50 +255,50 @@ Health check endpoint.
 
 ### Production Deployment
 
-1. **Update BASE_URL** in `docker-compose.yml` or `.env`:
+1. **Update BASE_URL** in `docker-compose.yml` or via environment variable:
 
 ```yaml
-- BASE_URL=https://your-domain.com
+environment:
+  - BASE_URL=https://your-domain.com
 ```
 
-2. **Set up reverse proxy** (nginx, Caddy, etc.) with SSL
+Or with docker run:
+```bash
+docker run -d \
+  --name agent-share \
+  -p 8721:8721 \
+  -v agent-share-data:/app/storage \
+  -e BASE_URL=https://your-domain.com \
+  ghcr.io/henricook/agent-share:latest
+```
 
-3. **Configure persistent storage**:
+2. **Set up reverse proxy** (nginx, Caddy, Traefik, etc.) with SSL in front of the application
+
+3. **Optional: Configure persistent storage** with bind mounts instead of named volumes if needed:
 
 ```yaml
 volumes:
   - /path/to/persistent/storage:/app/storage:rw
 ```
 
-4. **Build and deploy**:
-
-```bash
-docker-compose up -d --build
-```
-
-### Nginx Reverse Proxy Example
-
-```nginx
-server {
-    listen 443 ssl http2;
-    server_name your-domain.com;
-
-    ssl_certificate /path/to/cert.pem;
-    ssl_certificate_key /path/to/key.pem;
-
-    location / {
-        proxy_pass http://localhost:8721;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
-    }
-}
-```
-
 ## Updating cclogviewer
 
-### Docker
+### Using Pre-built Image
+
+Pull the latest image which includes the latest cclogviewer:
+
+```bash
+docker pull ghcr.io/henricook/agent-share:latest
+docker restart agent-share
+```
+
+Or with docker-compose:
+```bash
+docker-compose pull
+docker-compose up -d
+```
+
+### Building from Source
 
 Rebuild the Docker image to pull the latest cclogviewer:
 
