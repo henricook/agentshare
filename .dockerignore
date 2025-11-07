@@ -1,0 +1,16 @@
+node_modules
+npm-debug.log
+dist
+.git
+.env
+.env.local
+storage/*.jsonl
+storage/**/*.jsonl
+storage/**/*.html
+storage/**/.cache-marker
+storage/.generation-marker
+*.md
+.vscode
+.idea
+.DS_Store
+*.log

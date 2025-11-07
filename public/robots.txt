@@ -1,0 +1,8 @@
+User-agent: *
+Disallow: /view/
+Disallow: /api/
+
+# Allow home page for discovery
+Allow: /
+
+# Prevent indexing of all session content
