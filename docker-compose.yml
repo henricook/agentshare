@@ -22,6 +22,7 @@ services:
       - "8721:8721"
     environment:
       - NODE_ENV=production
+      - HOST=0.0.0.0
       - PORT=8721
       - STORAGE_PATH=/app/storage
       - MAX_FILE_SIZE_MB=50

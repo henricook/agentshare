@@ -58,14 +58,15 @@ async function startup() {
     await initializeGenerationMarker();
     console.log('Generation marker initialized successfully');
 
-    console.log(`Starting server on port ${env.PORT}...`);
+    console.log(`Starting server on ${env.HOST}:${env.PORT}...`);
     serve(
       {
         fetch: app.fetch,
         port: env.PORT,
+        hostname: env.HOST,
       },
       (info) => {
-        console.log(`Server running at http://localhost:${info.port}`);
+        console.log(`Server running at http://${env.HOST}:${info.port}`);
         console.log(`Storage path: ${env.STORAGE_PATH}`);
         console.log(`Environment: ${env.NODE_ENV}`);
       }

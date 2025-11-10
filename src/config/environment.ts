@@ -2,6 +2,7 @@ import { z } from 'zod';
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  HOST: z.string().default('0.0.0.0'),
   PORT: z.string().default('8721').transform(Number),
   STORAGE_PATH: z.string().default('./storage'),
   MAX_FILE_SIZE_MB: z.string().default('50').transform(Number),

@@ -145,6 +145,7 @@ All configuration is done via environment variables. See `.env.example` for all 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `NODE_ENV` | `development` | Environment mode |
+| `HOST` | `0.0.0.0` | Host to bind to (0.0.0.0 for all interfaces, required for Docker/K8s) |
 | `PORT` | `8721` | Server port |
 | `STORAGE_PATH` | `./storage` | Directory for uploaded files |
 | `MAX_FILE_SIZE_MB` | `50` | Maximum upload file size |
