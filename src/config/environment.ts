@@ -6,7 +6,7 @@ const envSchema = z.object({
   STORAGE_PATH: z.string().default('./storage'),
   MAX_FILE_SIZE_MB: z.string().default('50').transform(Number),
   MAX_JSONL_LINES: z.string().default('10000000').transform(Number),
-  CCLOGVIEWER_BIN_PATH: z.string().default('cclogviewer'),
+  CCLOGVIEWER_BIN_PATH: z.string().optional(),
   CCLOGVIEWER_TIMEOUT_MS: z.string().default('60000').transform(Number),
   RATE_LIMIT_UPLOAD_WINDOW_MS: z.string().default('900000').transform(Number),
   RATE_LIMIT_UPLOAD_MAX: z.string().default('10').transform(Number),

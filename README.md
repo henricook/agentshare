@@ -81,7 +81,7 @@ Open http://localhost:8721 in your browser.
 go install github.com/brads3290/cclogviewer/cmd/cclogviewer@latest
 ```
 
-This installs cclogviewer to `~/go/bin/cclogviewer`. Make sure `~/go/bin` is in your PATH, or update `.env` with the full path.
+This installs cclogviewer to `~/go/bin/cclogviewer`, which will be automatically detected by Agent Share.
 
 3. **Install dependencies**
 
@@ -101,11 +101,17 @@ mkdir -p storage
 cp .env.example .env
 ```
 
-Optionally, update `CCLOGVIEWER_BIN_PATH` in `.env` if cclogviewer is not in your PATH:
+The cclogviewer binary path is automatically detected. Only set `CCLOGVIEWER_BIN_PATH` in `.env` if you installed it in a custom location:
 
 ```bash
-CCLOGVIEWER_BIN_PATH=/home/youruser/go/bin/cclogviewer
+# Only needed for custom installations
+CCLOGVIEWER_BIN_PATH=/custom/path/to/cclogviewer
 ```
+
+**Auto-detection locations** (checked in order):
+1. `CCLOGVIEWER_BIN_PATH` environment variable (if set)
+2. `/app/bin/cclogviewer` (Docker/Kubernetes)
+3. `~/go/bin/cclogviewer` (local `go install`)
 
 6. **Run in development mode**
 
@@ -143,7 +149,7 @@ All configuration is done via environment variables. See `.env.example` for all 
 | `STORAGE_PATH` | `./storage` | Directory for uploaded files |
 | `MAX_FILE_SIZE_MB` | `50` | Maximum upload file size |
 | `MAX_JSONL_LINES` | `10000000` | Maximum lines in JSONL file |
-| `CCLOGVIEWER_BIN_PATH` | `cclogviewer` | Path to cclogviewer binary (assumes in PATH) |
+| `CCLOGVIEWER_BIN_PATH` | Auto-detected | Path to cclogviewer binary (auto-detected, optional override) |
 | `RATE_LIMIT_UPLOAD_MAX` | `10` | Max uploads per window |
 | `BASE_URL` | `http://localhost:8721` | Base URL for shareable links |
 

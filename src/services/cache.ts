@@ -1,12 +1,13 @@
 import { createHash } from 'crypto';
 import { promises as fs } from 'fs';
-import { env } from '../config/environment.js';
 import {
   getGenerationConfigPath,
   getGlobalMarkerPath,
 } from './storage.js';
+import { resolveCclogviewerPath } from '../utils/binary-resolver.js';
 
 let cachedGenerationHash: string | null = null;
+let resolvedBinaryPath: string | null = null;
 
 /**
  * Calculate SHA-256 hash of a file
@@ -28,7 +29,12 @@ async function hashFile(filePath: string): Promise<string> {
  * @returns SHA-256 hash representing current generation configuration
  */
 async function calculateGenerationHash(): Promise<string> {
-  const binaryHash = await hashFile(env.CCLOGVIEWER_BIN_PATH);
+  // Resolve binary path on first use
+  if (!resolvedBinaryPath) {
+    resolvedBinaryPath = await resolveCclogviewerPath();
+  }
+
+  const binaryHash = await hashFile(resolvedBinaryPath);
   const configHash = await hashFile(getGenerationConfigPath());
 
   // Combine both hashes
@@ -80,11 +86,16 @@ export async function initializeGenerationMarker(): Promise<void> {
   // Ensure config file exists
   await ensureGenerationConfig();
 
+  // Resolve binary path (will be cached in calculateGenerationHash)
+  if (!resolvedBinaryPath) {
+    resolvedBinaryPath = await resolveCclogviewerPath();
+  }
+
   const hash = await getGenerationHash();
   const marker = {
     generationHash: hash,
     timestamp: new Date().toISOString(),
-    binaryPath: env.CCLOGVIEWER_BIN_PATH,
+    binaryPath: resolvedBinaryPath,
     configPath: getGenerationConfigPath(),
   };
 

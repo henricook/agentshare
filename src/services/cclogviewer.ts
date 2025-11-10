@@ -1,5 +1,8 @@
 import { spawn } from 'child_process';
 import { env } from '../config/environment.js';
+import { resolveCclogviewerPath } from '../utils/binary-resolver.js';
+
+let resolvedBinaryPath: string | null = null;
 
 /**
  * Execute cclogviewer to convert JSONL to HTML
@@ -11,10 +14,15 @@ export async function generateHTML(
   inputPath: string,
   outputPath: string
 ): Promise<void> {
+  // Resolve binary path on first use
+  if (!resolvedBinaryPath) {
+    resolvedBinaryPath = await resolveCclogviewerPath();
+  }
+
   return new Promise((resolve, reject) => {
     const args = ['-input', inputPath, '-output', outputPath];
 
-    const process = spawn(env.CCLOGVIEWER_BIN_PATH, args, {
+    const process = spawn(resolvedBinaryPath!, args, {
       stdio: ['ignore', 'pipe', 'pipe'],
     });
 
