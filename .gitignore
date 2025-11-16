@@ -1,8 +1,20 @@
+# Dependencies and build output
 node_modules
 dist
+
+# Environment and configuration
 .env
 .env.local
+
+# Storage directory (runtime data)
 storage
+
+# Logs
 *.log
 npm-debug.log*
+
+# OS files
 .DS_Store
+
+# Claude Code slash commands (these should be committed)
+!.claude/commands/

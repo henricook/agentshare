@@ -8,6 +8,7 @@ A production-ready service for uploading AI agent session logs, converting them 
 ## Features
 
 - **Beautiful Upload UI**: Modern, responsive drag-and-drop interface
+- **Claude Code Integration**: Custom slash commands (`/logget`, `/logup`) for instant session sharing
 - **Secure Sharing**: Cryptographically secure UUID-based links (security by obscurity)
 - **Smart Caching**: Regenerates HTML only when cclogviewer binary or config changes
 - **Rate Limiting**: Built-in protection against abuse
@@ -48,6 +49,24 @@ volumes:
 ```
 
 Then access the application at http://localhost:8721.
+
+**Optional: Install Claude Code slash commands for easy session sharing**
+
+```bash
+# Clone the repository to get the slash commands
+git clone https://github.com/henricook/agent-share.git
+cd agent-share
+
+# Install globally for all projects
+mkdir -p ~/.claude/commands
+cp .claude/commands/logget.md ~/.claude/commands/
+cp .claude/commands/logup.md ~/.claude/commands/
+
+# Set your Agent Share URL (if not using localhost)
+export AGENT_SHARE_URL=http://localhost:8721
+```
+
+Now you can use `/logup` in any Claude Code session to instantly share your work!
 
 ### Building from Source
 
@@ -135,6 +154,64 @@ Open http://localhost:8721 in your browser.
 ### Viewing a Session
 
 Visit the generated link (e.g., `http://localhost:8721/view/{uuid}`) to view the converted HTML session log.
+
+### Claude Code Integration (Recommended)
+
+Agent Share includes custom slash commands for Claude Code that make uploading sessions much easier. These commands are stored in `.claude/commands/` and can be used directly from any Claude Code session.
+
+#### Installing the Slash Commands
+
+**Option 1: Copy to your Claude Code global commands (Recommended)**
+
+This makes the commands available in all your projects:
+
+```bash
+# Create the global commands directory if it doesn't exist
+mkdir -p ~/.claude/commands
+
+# Copy the commands
+cp .claude/commands/logget.md ~/.claude/commands/
+cp .claude/commands/logup.md ~/.claude/commands/
+```
+
+**Option 2: Use per-project commands**
+
+The commands in `.claude/commands/` will automatically be available when working in the agent-share project directory.
+
+#### Available Commands
+
+**`/logget` - Copy session to project directory**
+
+Copies the current Claude Code session `.jsonl` file to your project directory, ready for manual upload.
+
+```
+/logget
+```
+
+This will copy the latest session file and show you where it was saved.
+
+**`/logup` - Upload session directly to Agent Share**
+
+Uploads the current session directly to your Agent Share instance and returns a shareable link.
+
+```
+/logup
+```
+
+By default, this uploads to `http://localhost:8721`. To use a different Agent Share instance, set the `AGENT_SHARE_URL` environment variable:
+
+```bash
+export AGENT_SHARE_URL=https://your-agent-share.example.com
+```
+
+#### Quick Workflow Example
+
+1. Have an interesting Claude Code session you want to share
+2. Type `/logup` in Claude Code
+3. Get an instant shareable link
+4. Share the link with your team
+
+No need to manually find the session file or visit the upload page!
 
 ## Configuration
 
